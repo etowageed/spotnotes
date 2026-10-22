@@ -1,0 +1,24 @@
+{
+  "name": "spotnotes",
+  "version": "1.0.0",
+  "description": "Ubuntu GNOME Sticky Notes desktop application with XWayland window position persistence",
+  "main": "src/main.js",
+  "author": "SpotNotes Contributors",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "electron --no-sandbox --ozone-platform=x11 .",
+    "dev": "SPOTNOTES_DEV=1 electron --no-sandbox --ozone-platform=x11 .",
+    "start:wayland": "electron --no-sandbox --ozone-platform=wayland .",
+    "test": "node --test tests/*.test.js",
+    "verify:xwayland": "node scripts/verify-xwayland.js",
+    "build": "node scripts/build-deb.js",
+    "dist": "node scripts/build-deb.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "electron": "45.0.0"
+  }
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none';"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpotNotes</title>
+  <link rel="stylesheet" href="note.css" />
+</head>
+<body class="note-theme-yellow" data-colour="yellow">
+  <div class="note-shell" id="note-shell">
+    <header class="note-toolbar" role="toolbar" aria-label="Sticky note controls">
+      <button
+        type="button"
+        id="btn-new-note"
+        class="toolbar-btn"
+        aria-label="Create new sticky note"
+        title="New Sticky Note (Ctrl+N)"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div
+        class="note-drag-handle"
+        id="drag-handle"
+        title="Drag to move sticky note"
+        aria-label="Drag handle to move sticky note"
+      >
+        <span class="drag-grip" aria-hidden="true"></span>
+        <span class="pin-badge" id="pin-badge" hidden title="Pinned Always on Top">Pinned</span>
+      </div>
+
+      <div class="toolbar-actions">
+        <button
+          type="button"
+          id="btn-colour"
+          class="toolbar-btn"
+          aria-label="Change note colour"
+          aria-haspopup="true"
+          aria-expanded="false"
+          title="Change Note Colour"
+        >
+          <span class="colour-dot" id="current-colour-dot" aria-hidden="true"></span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-pin"
+          class="toolbar-btn"
+          aria-label="Toggle Always on Top"
+          aria-pressed="false"
+          title="Pin Note Always on Top"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path
+              d="M9.8 2.2L13.8 6.2L12.4 7.6L10.3 6.2L7.2 9.3L8.2 11.8L6.8 13.2L4.7 9.7L1.8 12.6L1.1 11.9L4 9L0.5 6.9L1.9 5.5L4.4 6.5L7.5 3.4L6.1 1.3L7.5 0L9.8 2.2Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          id="btn-menu"
+          class="toolbar-btn"
+          aria-label="Application options and closed notes"
+          aria-haspopup="true"
+          aria-expanded="false"
+          title="Options &amp; Application Menu"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <circle cx="3" cy="8" r="1.4" fill="currentColor" />
+            <circle cx="8" cy="8" r="1.4" fill="currentColor" />
+            <circle cx="13" cy="8" r="1.4" fill="currentColor" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          id="btn-delete"
+          class="toolbar-btn toolbar-btn-danger"
+          aria-label="Delete sticky note"
+          title="Delete Sticky Note Permanently"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path
+              d="M5.5 2.5h5M2.5 4h11M4.2 4l.6 9.2c.05.7.6 1.3 1.3 1.3h3.8c.7 0 1.25-.6 1.3-1.3L11.8 4M6.5 6.5v5M9.5 6.5v5"
+              stroke="currentColor"
+              stroke-width="1.35"
+              stroke-linecap="round"
+              fill="none"
+            />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          id="btn-close-window"
+          class="toolbar-btn"
+          aria-label="Close note window without deleting content"
+          title="Close Window (keeps note saved)"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path
+              d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Colour Picker Popover -->
+    <div
+      id="colour-palette-bar"
+      class="popover-bar"
+      role="region"
+      aria-label="Select sticky note colour"
+      hidden
+    >
+      <button
+        type="button"
+        class="swatch-btn swatch-yellow"
+        data-colour="yellow"
+        aria-label="Yellow sticky note"
+        title="Yellow"
+      ></button>
+      <button
+        type="button"
+        class="swatch-btn swatch-pink"
+        data-colour="pink"
+        aria-label="Pink sticky note"
+        title="Pink"
+      ></button>
+      <button
+        type="button"
+        class="swatch-btn swatch-blue"
+        data-colour="blue"
+        aria-label="Blue sticky note"
+        title="Blue"
+      ></button>
+      <button
+        type="button"
+        class="swatch-btn swatch-green"
+        data-colour="green"
+        aria-label="Green sticky note"
+        title="Green"
+      ></button>
+      <button
+        type="button"
+        class="swatch-btn swatch-lavender"
+        data-colour="lavender"
+        aria-label="Lavender sticky note"
+        title="Lavender"
+      ></button>
+    </div>
+
+    <!-- App Settings & Actions Popover -->
+    <div
+      id="app-menu-bar"
+      class="popover-panel"
+      role="region"
+      aria-label="Application settings and actions"
+      hidden
+    >
+      <label class="menu-checkbox-row" for="chk-launch-login">
+        <input type="checkbox" id="chk-launch-login" />
+        <span>Launch SpotNotes at login</span>
+      </label>
+
+      <div class="menu-actions-row">
+        <button
+          type="button"
+          id="btn-reopen-closed"
+          class="menu-action-btn"
+          disabled
+          title="Restore notes whose windows were closed"
+        >
+          Reopen Closed Notes (0)
+        </button>
+        <button
+          type="button"
+          id="btn-quit-app"
+          class="menu-action-btn menu-action-quit"
+          title="Save all notes and quit SpotNotes (Ctrl+Q)"
+        >
+          Quit SpotNotes
+        </button>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Banner -->
+    <div
+      id="delete-confirm-bar"
+      class="confirm-bar"
+      role="alertdialog"
+      aria-labelledby="delete-confirm-label"
+      hidden
+    >
+      <span id="delete-confirm-label" class="confirm-text">Delete this note permanently?</span>
+      <div class="confirm-actions">
+        <button
+          type="button"
+          id="btn-confirm-delete"
+          class="confirm-btn confirm-btn-danger"
+          aria-label="Confirm permanent deletion"
+        >
+          Delete
+        </button>
+        <button
+          type="button"
+          id="btn-cancel-delete"
+          class="confirm-btn"
+          aria-label="Cancel deletion"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Sticky Note Editor -->
+    <main class="note-editor-container">
+      <textarea
+        id="note-textarea"
+        class="note-textarea"
+        aria-label="Sticky note content"
+        placeholder="Write a sticky note…"
+        spellcheck="false"
+      ></textarea>
+    </main>
+
+    <!-- Footer with subtle save status and resize affordance -->
+    <footer class="note-footer">
+      <span id="save-status" class="save-status" aria-live="polite">Saved</span>
+      <div
+        class="resize-affordance"
+        title="Drag window edge or corner to resize"
+        aria-hidden="true"
+      ></div>
+    </footer>
+  </div>
+
+  <script src="controls.js"></script>
+  <script src="note.js"></script>
+</body>
+</html>

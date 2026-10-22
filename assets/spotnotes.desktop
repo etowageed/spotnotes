@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SpotNotes
+GenericName=Sticky Notes
+Comment=Ubuntu sticky notes with persistent XWayland window positioning
+Exec=/usr/bin/spotnotes --ozone-platform=x11 %U
+Icon=spotnotes
+Terminal=false
+Categories=Utility;GTK;
+StartupNotify=true
+StartupWMClass=spotnotes
+Keywords=notes;sticky;post-it;memo;
